@@ -11,7 +11,6 @@ import com.hac.service.TaskService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,14 +20,15 @@ import java.util.stream.Collectors;
  */
 @Service
 public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements TaskService {
-    
+
     @Override
     public boolean addTask(TaskDTO taskDTO) {
         Task task = new Task();
         BeanUtils.copyProperties(taskDTO, task);
+        task.setDeadline(taskDTO.getDeadline().plusHours(8));
         return save(task);
     }
-    
+
     @Override
     public boolean updateTaskStatus(Long id, String status) {
         Task task = getById(id);
@@ -38,17 +38,17 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         task.setStatus(status);
         return updateById(task);
     }
-    
+
     @Override
     public boolean deleteTask(Long id) {
         return removeById(id);
     }
-    
+
     @Override
     public List<TaskDTO> getTaskList(String sortBy) {
         LambdaQueryWrapper<Task> queryWrapper = new LambdaQueryWrapper<>();
         List<Task> taskList = list(queryWrapper);
-        
+
         List<TaskDTO> taskDTOList = taskList.stream().map(task -> {
             TaskDTO taskDTO = new TaskDTO();
             BeanUtils.copyProperties(task, taskDTO);
@@ -58,7 +58,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
             taskDTO.setStatusDesc(StatusEnum.getDescByCode(task.getStatus()));
             return taskDTO;
         }).collect(Collectors.toList());
-        
+
         // 根据排序字段排序
         if ("priority".equals(sortBy)) {
             // 按优先级排序：HIGH > MEDIUM > LOW
@@ -69,13 +69,13 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
             });
         } else if ("deadline".equals(sortBy)) {
             // 按截止日期排序：早 -> 晚
-            taskDTOList.sort(Comparator.comparing(TaskDTO::getDeadline, 
+            taskDTOList.sort(Comparator.comparing(TaskDTO::getDeadline,
                     Comparator.nullsLast(Comparator.naturalOrder())));
         }
-        
+
         return taskDTOList;
     }
-    
+
     /**
      * 获取优先级顺序
      *
