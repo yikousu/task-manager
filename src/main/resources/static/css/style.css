@@ -1,0 +1,68 @@
+/* 全局样式 */
+body {
+    background-color: #f8f9fa;
+}
+
+/* 任务卡片样式 */
+.card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    font-weight: bold;
+}
+
+/* 任务列表项样式 */
+.list-group-item {
+    transition: all 0.3s ease;
+    border-left: 4px solid #dee2e6;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+}
+
+/* 优先级标签样式 */
+.badge {
+    padding: 6px 10px;
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+/* 按钮样式 */
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.2rem;
+}
+
+/* 优先级颜色 */
+.priority-high {
+    background-color: #dc3545;
+    color: white;
+}
+
+.priority-medium {
+    background-color: #fd7e14;
+    color: white;
+}
+
+.priority-low {
+    background-color: #20c997;
+    color: white;
+}
+
+/* 已完成任务样式 */
+.completed {
+    opacity: 0.6;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+}
